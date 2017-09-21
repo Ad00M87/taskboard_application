@@ -2,10 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateTask, deleteTask } from '../actions/tasks';
-import { Container, Grid, Header, Card, Dropdown, Divider, Button } from 'semantic-ui-react';
+import TaskForm from './TaskForm';
+import {
+  Container,
+  Grid,
+  Header,
+  Card,
+  Dropdown,
+  Divider,
+  Button,
+} from 'semantic-ui-react';
 
 class Tasks extends React.Component {
-  state = { status: ''}
+  state = { status: '', formShowing: false }
 
   statusOptions = () => {
     return this.props.status.map( (status, index) => {
@@ -15,6 +24,10 @@ class Tasks extends React.Component {
 
   clearFilter = () => {
     this.setState({ status: '' })
+  }
+
+  changeShow = () => {
+    this.setState({ formShowing: !this.state.formShowing })
   }
 
   tasks = () => {
@@ -43,7 +56,8 @@ class Tasks extends React.Component {
           </Card>
           <Button
             style={styles.buttons}
-            color="orange">
+            color="orange"
+          >
             Edit Task
           </Button>
           <Button
@@ -58,10 +72,26 @@ class Tasks extends React.Component {
   }
 
   render() {
-    let { status } = this.state;
+    let { status, formShowing } = this.state;
     return(
       <Container>
-        <Header as='h3' textAlign='center'>Tasks</Header>
+        <Header
+          as='h2'
+          textAlign='center'
+          style={{
+            background: 'rgb(44, 121, 193)',
+            padding: '15px',
+            borderRadius: '15px',
+            color: 'white'
+          }}
+        >Tasks</Header>
+        { formShowing ? <TaskForm changeShow={this.changeShow}/> :
+        <Button
+          fluid
+          onClick={this.changeShow}
+          color="blue"
+          >Add Task</Button> }
+        <Divider />
         <Dropdown
           placeholder='Filter Tasks By Status'
           fluid

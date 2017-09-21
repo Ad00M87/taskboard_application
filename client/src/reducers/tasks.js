@@ -3,7 +3,7 @@ const tasks = ( state = [], action ) => {
     case 'TASKS':
       return action.tasks;
     case 'ADD_TASK':
-      return [...state, action.task]
+      return [ action.task, ...state ]
     case 'UPDATE_TASK':
       return state.map( task => {
         if(task.id === action.task.id)
